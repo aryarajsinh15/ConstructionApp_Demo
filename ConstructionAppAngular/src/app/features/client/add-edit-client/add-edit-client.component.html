@@ -1,0 +1,81 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{this.clientId == null ? ('ADD_CLIENT' | translate) :
+            ('EDIT_CLIENT' | translate)}}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditClientForm" (ngSubmit)="submitClientForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'CLIENT_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_CLIENT_NAME' | translate" formControlName="clientName"
+                    type="text" />
+                <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditClientForm.get('clientName')?.hasError('required')">
+                    {{ 'CLIENT_NAME_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'FIRM_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_FIRM_NAME' | translate" formControlName="firmName" type="text" />
+                <mat-icon matPrefix svgIcon="mat:location_city"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditClientForm.get('firmName')?.hasError('required')">
+                    {{ 'FIRM_NAME_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_PACKAGE_TYPE' | translate }}</mat-label>
+                <mat-select formControlName="packageType">
+                    <mat-option *ngFor="let type of packageType" [value]="type.packageTypeId">
+                        {{ type.packageType }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:card_giftcard"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditClientForm.get('packageType')?.hasError('required')">
+                    {{ 'PLEASE_SELECT_PACKAGE_TYPE' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'CHOOSE_EXPIRY_DATE' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="expireDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="submitted && AddEditClientForm.get('expireDate')?.hasError('required')">
+                    {{ 'EXPIRY_DATE_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'ADDRESS' | translate }}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_ADDRESS' | translate" formControlName="address"></textarea>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'REMARKS' | translate }}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_REMARKS' | translate" formControlName="remarks"></textarea>
+            </mat-form-field>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <label>Header Image</label>&nbsp;
+                    <input type="file" formControlName="headerFile" accept=".png, .jpg, .jpeg" (change)="onHeaderFileSelected($event)" /><br/>
+                    <button type="button" *ngIf="this.editedClientDetails.headerImageLetterPage != null"><a
+                            class="show-file-button" [href]="this.editedClientDetails.headerImageLetterPage"
+                            target="_blank">ShowFile</a></button>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <label>Footer Image</label>&nbsp;
+                    <input type="file" formControlName="footerFile" accept=".png, .jpg, .jpeg" (change)="onFooterFileSelected($event)" /><br/>
+                    <button type="button" *ngIf="this.editedClientDetails.footerImageLetterPage != null"><a
+                            class="show-file-button" [href]="this.editedClientDetails.footerImageLetterPage"
+                            target="_blank">ShowFile</a></button>
+                </div>
+            </div>
+            <div class="float-end">
+                <button mat-flat-button color="primary" type="submit">{{this.clientId == null ? ('ADD' | translate) :
+                    ('UPDATE' | translate)}}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

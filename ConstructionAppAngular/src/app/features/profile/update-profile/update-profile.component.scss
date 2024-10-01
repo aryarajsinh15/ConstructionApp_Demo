@@ -1,0 +1,30 @@
+.profile-image {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    position: relative;
+    object-fit: cover;
+    background-color: #e4e4e7;
+    border: 2px solid #e4e4e7;
+}
+
+.upload-btn input[type="file"] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.upload-btn {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.img-icon {
+    position: absolute;
+    bottom: 30px;
+    right: 10px;
+    cursor: pointer;
+}

@@ -1,0 +1,16 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title previewHeading" id="modal-basic-title">{{ 'CHANGE_STATUS' | translate }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" [mat-dialog-close]="false"></button>
+    </div>
+    <mat-dialog-content class="">
+        <p class="confirmation {{ title == 'Active' ? 'active-title' : 'inactive-title' }}">
+            {{ 'ARE_YOU_SURE' | translate }} {{ title }}?
+        </p>
+        <p class="name WrapData">{{ action }}</p>
+    </mat-dialog-content>
+    <div class="float-end">
+        <button mat-flat-button color="primary" [mat-dialog-close]="true">{{ 'YES' | translate }}</button>&nbsp;
+        <button mat-button color="primary" [mat-dialog-close]="false">{{ 'NO' | translate }}</button>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{groupId == null ? ('ADD_PERSPON_GROUP' | translate) :
+            ('EDIT_PERSPON_GROUP' | translate) }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="addEditGroupForm" (ngSubmit)="submitGroupForm()">
+
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'GROUP_NAME' | translate}}</mat-label>
+                <input matInput [placeholder]="'ENTER_GROUP_NAME' | translate" formControlName="groupName" />
+                <mat-icon matPrefix svgIcon="mat:home"></mat-icon>
+                <mat-error *ngIf="submitted && addEditGroupForm.get('groupName').hasError('required')">
+                    {{ 'GROUP_NAME_IS_REQUIRED' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_PERSONS' | translate}}</mat-label>
+                <mat-select formControlName="persons" multiple="true">
+                    <mat-option *ngFor="let person of personList" [value]="person.personId">
+                        {{ person.personFirstName }}
+                    </mat-option>
+                </mat-select>
+
+                <mat-icon matPrefix svgIcon="mat:location_city"></mat-icon>
+                <mat-error *ngIf="submitted && addEditGroupForm.get('persons').hasError('required')">
+                    {{ 'SELECT_ONE_PERSON' | translate}}
+                </mat-error>
+            </mat-form-field>
+            
+            <div class="float-end">
+                <button mat-flat-button color="primary" type="submit">{{groupId == null ? ('ADD' | translate) :
+                    ('UPDATE' | translate)}}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate
+                    }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

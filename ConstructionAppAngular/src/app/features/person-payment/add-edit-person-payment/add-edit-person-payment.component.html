@@ -1,0 +1,88 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{this.personFinanceId == null ? ('ADD_PERSON_PAYMENT' | translate) :
+            ('EDIT_PERSON_PAYMENT' | translate)}}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditPersonPaymentForm" (ngSubmit)="submitPersonPaymentForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_PAYMENT_DATE' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="selectDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="submitted && AddEditPersonPaymentForm.get('selectDate')?.hasError('required')">
+                    {{ 'PAYMENT_DATE_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_PAYMENT_TYPE' | translate }}</mat-label>
+                <mat-select formControlName="paymentName" (selectionChange)="onPaymentTypeChange($event.value)">
+                    <mat-option *ngFor="let payment of paymentType" [value]="payment.paymentId">
+                        {{ payment.PaymentName }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:payment"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditPersonPaymentForm.get('paymentName').hasError('required')">
+                    {{ 'PLEASE_SELECT_PAYMENT_TYPE' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'AMOUNT' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_AMOUNT' | translate" formControlName="amount" type="text" maxlength="10"
+                oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);" />
+                <mat-icon matPrefix svgIcon="mat:monetization_on"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditPersonPaymentForm.get('amount')?.hasError('required')">
+                    {{ 'AMOUNT_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline" *ngIf="paymentId == 'Cheque'">
+                <mat-label>{{ 'BANK_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_BANK_NAME' | translate" formControlName="bankName" type="text" />
+                <mat-icon matPrefix svgIcon="mat:account_balance"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditPersonPaymentForm.get('bankName')?.hasError('required')">
+                    {{ 'BANK_NAME_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline" *ngIf="paymentId == 'Cheque'">
+                <mat-label>{{ 'CHEQUE_NUMBER' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_CHEQUE_NUMBER' | translate" formControlName="chequeNumber" type="text" />
+                <mat-icon matPrefix svgIcon="mat:video_label"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditPersonPaymentForm.get('chequeNumber')?.hasError('required')">
+                    {{ 'CHEQUE_NUMBER_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline" *ngIf="paymentId == 'Cheque'">
+                <mat-label>{{ 'CHEQUE_FOR' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_CHEQUE_FOR' | translate" formControlName="chequeFor" type="text" />
+                <mat-icon matPrefix svgIcon="mat:calendar_view_day"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditPersonPaymentForm.get('chequeFor')?.hasError('required')">
+                    {{ 'CHEQUE_FOR_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_USER' | translate }}</mat-label>
+                <mat-select formControlName="userName">
+                    <mat-option *ngFor="let user of userList" [value]="user.userId" [title]="user.emailId">
+                        {{ user.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:supervisor_account"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditPersonPaymentForm.get('userName').hasError('required')">
+                    {{ 'PEASE_SELECT_USER' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'REMARKS' | translate }}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_REMARKS' | translate" formControlName="remarks"></textarea>
+            </mat-form-field>
+            <div class="float-end">
+                <button mat-flat-button color="primary" type="submit">{{this.personFinanceId == null ? ('ADD' | translate) : ('UPDATE' | translate) }}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

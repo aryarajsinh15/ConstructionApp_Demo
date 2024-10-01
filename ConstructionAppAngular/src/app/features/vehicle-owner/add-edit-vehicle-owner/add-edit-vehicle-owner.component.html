@@ -1,0 +1,44 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">
+            {{ vehicleOwnerId == null ?  ('ADD_VEHICLE_OWNER' | translate) : ('EDIT_VEHICLE_OWNER' | translate) }}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditVehicleOwnerForm" (ngSubmit)="submitVehicleOwnerForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'VEHICLE_OWNER_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_VEHICLE_OWNER_NAME' | translate" type="text" formControlName="vehicleOwnerName">
+                <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditVehicleOwnerForm.get('vehicleOwnerName').hasError('required')">
+                    {{ 'VEHICLE_OWNER_NAME_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'MOBILE_NUMBER' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_MOBILE_NUMBER' | translate" formControlName="mobileNo"
+                    oninput="this.value = this.value.replace(/^\s+|\D+/g, '').substring(0, 10)">
+                <mat-icon matPrefix svgIcon="mat:phone"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditVehicleOwnerForm.get('mobileNo').hasError('required')">
+                    {{ 'MOBILE_NUMBER_IS_REQUIRED' | translate }}
+                </mat-error>
+                <mat-error *ngIf="submitted && AddEditVehicleOwnerForm.get('mobileNo').errors?.['minlength']">
+                    {{ 'MOBILE_NUMBER_IS_INVALID' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'REMARKS' | translate }}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_REMARKS' | translate" type="text" formControlName="remarks"></textarea>
+            </mat-form-field>
+            <div class="float-end">
+                <button mat-flat-button color="primary" type="submit">
+                    {{ vehicleOwnerId == null ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

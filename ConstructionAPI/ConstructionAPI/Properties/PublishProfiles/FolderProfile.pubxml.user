@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\IIS\Construction Demo\API</_PublishTargetUrl>
+    <History>True|2024-06-06T05:32:10.8519341Z;True|2024-06-05T09:56:56.8540608+05:30;True|2024-06-04T18:48:15.7202627+05:30;False|2024-06-04T18:34:25.3460959+05:30;True|2024-05-30T17:20:13.7503648+05:30;True|2024-05-24T10:37:05.9122172+05:30;True|2024-05-24T10:35:42.0479984+05:30;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

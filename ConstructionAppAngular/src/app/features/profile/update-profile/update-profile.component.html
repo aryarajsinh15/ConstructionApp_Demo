@@ -1,0 +1,63 @@
+<div class="p-gutter container">
+    <div class="flex flex-col sm:flex-row gap-4">
+        <div class="card flex-auto">
+            <div class="px-6 py-4 border-b flex items-center">
+                <h2 class="title m-0">{{ 'MY_PROFILE' | translate }}</h2>
+            </div>
+            <form [formGroup]="UpdateProfileForm" (ngSubmit)="submitProfileForm()">
+                <div class="px-6 py-4 flex flex-col">
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-6 col-12 mb-2">
+                            <div class="position-relative upload-btn">
+                                <img (error)="handleImageError(imageSrc)"
+                                    [src]="imageSrc ? imageSrc : '../../../../assets/img/shaligram_logo/default-user-profile.svg'"
+                                    class="me-2 profile-image" alt="User Image" width="135" height="135" />
+                                <label for="uplaod-btn"><img src="../../../../assets/img/shaligram_logo/img-icon.svg"
+                                        class="img-icon" alt="" /></label>
+                                <input type="file" (change)="onFileSelected($event)" formControlName="userPhoto"
+                                    id="uplaod-btn" accept="image/*" />
+                            </div>
+                        </div>
+                    </div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{ 'USER_NAME' | translate }}</mat-label>
+                        <input type="text" matInput formControlName="userName" (input)="removeSpaces($event)">
+                        <mat-error *ngIf="submitted && UpdateProfileForm.get('userName').hasError('required')">
+                            {{ 'USER_NAME_IS_REQUIRED' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{ 'EMAIL' | translate }}</mat-label>
+                        <input type="text" matInput formControlName="email" (input)="removeSpacesFromEmail($event)">
+                        <mat-error *ngIf="submitted && UpdateProfileForm.get('email').hasError('required')">
+                            {{ 'EMAIL_IS_REQUIRED' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{ 'NAME' | translate }}</mat-label>
+                        <input type="text" matInput formControlName="name">
+                        <mat-error *ngIf="submitted && UpdateProfileForm.get('name').hasError('required')">
+                            {{ 'NAME_IS_REQUIRED' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{ 'MOBILE_NUMBER' | translate }}</mat-label>
+                        <input type="text" matInput formControlName="mobileNo"
+                            oninput="this.value = this.value.replace(/^\s+|\D+/g, '').substring(0, 10)">
+                        <mat-error *ngIf="submitted && UpdateProfileForm.get('mobileNo').hasError('required')">
+                            {{ 'MOBILE_NUMBER_IS_REQUIRED' | translate }}
+                        </mat-error>
+                        <mat-error *ngIf="submitted && UpdateProfileForm.get('mobileNo').errors?.['minlength']">
+                            {{ 'MOBILE_NUMBER_IS_INVALID' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="flex items-center justify-end gap-2">
+                        <button mat-flat-button color="primary" type="submit">{{ 'SUBMIT' | translate }}</button>
+                        <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate
+                            }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

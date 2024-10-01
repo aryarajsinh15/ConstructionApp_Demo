@@ -1,0 +1,49 @@
+<div class=" p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    <div *ngIf="roleId == 2"
+        class="count-box mb-3 card p-6 relative hover:shadow-lg transition duration-200 ease-out-swift flex flex-col items-center pointer"
+        (click)="navigate('site')">
+        <i class="fa-solid fa-building icon-sites"></i>
+        <h3>{{ 'SITES' | translate}}</h3>
+        <p class="site">{{siteCount}}</p>
+    </div>
+
+    <div *ngIf="roleId == 2"
+        class="count-box mb-3 card p-6 relative hover:shadow-lg transition duration-200 ease-out-swift flex flex-col items-center pointer"
+        (click)="navigate('user')">
+        <i class="fa-solid fa-users icon-users"></i>
+        <h3>{{ 'USERS' | translate}}</h3>
+        <p class="user">{{userCount}}</p>
+    </div>
+
+    <div *ngIf="roleId == 2"
+        class="count-box mb-3 card p-6 relative hover:shadow-lg transition duration-200 ease-out-swift flex flex-col items-center pointer"
+        (click)="navigate('merchant')">
+        <i class="fa-solid fa-user-tie icon-merchants"></i>
+        <h3>{{ 'MERCHANTS' | translate}}</h3>
+        <p class="merchant">{{merchantCount}}</p>
+    </div>
+
+    <div *ngIf="roleId == 2"
+        class="count-box mb-3 card p-6 relative hover:shadow-lg transition duration-200 ease-out-swift flex flex-col items-center pointer"
+        (click)="navigate('person')">
+        <i class="fa-solid fa-person icon-persons"></i>
+        <h3>{{ 'PERSONS' | translate}}</h3>
+        <p class="person">{{personCount}}</p>
+    </div>
+
+    <div *ngIf="roleId == 2"
+        class="count-box mb-3 card p-6 relative hover:shadow-lg transition duration-200 ease-out-swift flex flex-col items-center pointer"
+        (click)="navigate('vehicle-owner')">
+        <i class="fa-solid fa-person-biking icon-owners"></i>
+        <h3>{{ 'VEHICLE_OWNER' | translate}}</h3>
+        <p class="owner">{{ownerCount}}</p>
+    </div>
+
+    <div *ngIf="roleId == 1"
+        class="count-box mb-3 card p-6 relative hover:shadow-lg transition duration-200 ease-out-swift flex flex-col items-center pointer"
+        (click)="navigate('client')">
+        <i class="fa-solid fa-user icon-clients"></i>
+        <h3>{{ 'CLIENTS' | translate}}</h3>
+        <p class="client">{{clientCount}}</p>
+    </div>
+</div>

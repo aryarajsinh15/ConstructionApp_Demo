@@ -1,0 +1,58 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{this.billId == null ?('ADD_BILL_PAYMENT' | translate) :
+            ('EDIT_BILL_PAYMENT' | translate)}}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditSitePaymentDebitForm" (ngSubmit)="submitSitePaymentDebitForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{'BILL_DATE'|translate}}</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="billDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="submitted && AddEditSitePaymentDebitForm.get('billDate')?.hasError('required')">
+                    {{'BILL_DATE_IS_REQUIRED'|translate}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{'BILL_NUMBER'|translate}}</mat-label>
+                <input matInput [placeholder]="'ENTER_BILL_NUMBER' | translate" formControlName="billNumber" type="text" />
+                <mat-icon matPrefix svgIcon="mat:group_work"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditSitePaymentDebitForm.get('billNumber')?.hasError('required')">
+                    {{'BILL_NUMBER_IS_REQUIRED'|translate}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'TOTAL_AMOUNT' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_TOTAL_AMOUNT' | translate" formControlName="totalAmount" type="text"
+                    maxlength="10"
+                    oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);" />
+                <mat-icon matPrefix svgIcon="mat:monetization_on"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditSitePaymentDebitForm.get('totalAmount')?.hasError('required')">
+                    {{ 'TOTAL_AMOUNT_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'REMARKS' | translate }}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_REMARKS' | translate" formControlName="remarks"></textarea>
+            </mat-form-field>
+            <input type="file" formControlName="billFile" (change)="onFileSelected($event)" />
+            <mat-error *ngIf="submitted && AddEditSitePaymentDebitForm.get('billFile')?.hasError('required')">
+                {{'BILL_FILE_IS_REQUIRED'|translate}}
+            </mat-error>
+            <div class="float-end">
+                <button type="button" *ngIf="this.editedBillPaymentDetails.siteBillFile != null"><a
+                        class="show-file-button" [href]="this.editedBillPaymentDetails.siteBillFile"
+                        target="_blank">{{'SHOW_FILE'|translate}}</a></button>&nbsp;&nbsp;
+                <button mat-flat-button color="primary" type="submit">{{this.billId == null ? ('ADD' |
+                    translate) :
+                    ('UPDATE' | translate)}}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

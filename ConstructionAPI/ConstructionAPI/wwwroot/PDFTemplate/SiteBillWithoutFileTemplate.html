@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        table {
+            page-break-inside: avoid;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .item-detail {
+            margin-top: 10px;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .headerImage{
+            display: flex;
+            justify-content : center;
+            align-items : center;
+        }
+        .header{
+            height : 150px;
+            width : 100%;
+        }
+        .text-center{
+            text-align:center
+        }
+        .headerText{
+            text-decoration:underline;
+            font-size:30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center headerText">
+        {{SiteName}}
+    </div>
+    <div class="headerImage">
+        {{headerImageReplace}}
+    </div>
+
+    <div class="content">
+        <div>
+            <label><strong>Bill Date:</strong></label>
+            <span>{{BillDate}}</span>
+        </div>
+        <div>
+            <label><strong>Bill Number:</strong></label>
+            <span>{{BillNo}}</span>
+        </div>
+        <div>
+            <label><strong>Remarks:</strong></label>
+            <span>{{Remarks}}</span>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item Name</th>
+                        <th>Type</th>
+                        <th>Quantity</th>
+                        <th>Length</th>
+                        <th>Height</th>
+                        <th>Width</th>
+                        <th>Area</th>
+                        <th>Rate</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{tableBody}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="9" style="text-align:right;">
+                            <strong>Final Total</strong>
+                        </td>
+                        <td colspan="1">
+                            <strong>{{getFinalTotal}}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

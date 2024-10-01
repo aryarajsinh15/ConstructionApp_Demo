@@ -1,0 +1,36 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">
+            {{ siteId == null ? ('ADD_SITE' | translate) : ('EDIT_SITE' | translate) }}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditSiteForm" (ngSubmit)="submitSiteForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SITE_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_SITE_NAME' | translate" type="text" formControlName="siteName">
+                <mat-icon matPrefix svgIcon="mat:location_city"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditSiteForm.get('siteName').hasError('required')">
+                    {{ 'SITE_NAME_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SITE_DESCRIPTION' | translate }}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_SITE_DESCRIPTION' | translate"
+                    formControlName="siteDescription"></textarea>
+                <mat-error *ngIf="submitted && AddEditSiteForm.get('siteDescription').hasError('required')">
+                    {{ 'SITE_DESCRIPTION_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <div class="float-end">
+                <button mat-flat-button color="primary" type="submit">
+                    {{ siteId == null ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

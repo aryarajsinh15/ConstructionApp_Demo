@@ -1,0 +1,126 @@
+<div class="p-gutter container-fluid">
+    <div class="flex flex-col sm:flex-row gap-4">
+        <div class="card flex-auto">
+            <div class="px-6 py-4 border-b flex items-center">
+                <button (click)="backToAttendance()" class="cursor-pointer fs-4" title="Back To Attendance">
+                    <mat-icon svgIcon="mat:keyboard_backspace"></mat-icon>
+                </button>
+                <h2 class="title m-0 ms-3">{{ 'PERSON_ATTENDANCE' | translate }}</h2>
+            </div>
+            <div *ngIf="attendanceList.controls.length == 0"
+            >
+            <h5 class="text-center py-4">{{ 'NO_ATTENDANCE_PERSON_RECORD_FOUND' | translate }}</h5>
+          </div>
+            <form class="example-form" [formGroup]="AddEditPersonAttendanceForm" *ngIf="attendanceList.controls.length > 0"
+                (ngSubmit)="submitPesronAttendanceForm()">
+                <mat-form-field class="example-full-width w-70 p-2" appearance="outline">
+                    <mat-label>{{ 'CHOOSE_ADDTENDANCE_DATE' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="attendanceDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="submitted && AddEditPersonAttendanceForm.get('attendanceDate').hasError('required')">
+                        {{ 'ATTENDANCE_DATE_REQUIRED' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <div class="table-responsive">
+                    <table class="table table-responsive table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th>{{ 'PERSON_NAME' | translate }}</th>
+                                <th>{{ 'ATT_STATUS' | translate }}</th>
+                                <th>{{ 'SITE' | translate }}</th>
+                                <th> {{ 'WITHDRAW' | translate }}</th>
+                                <th> {{ 'OVERTIME' | translate }}</th>
+                                <th>{{ 'REMARKS' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody formArrayName="attendanceList">
+                            <ng-container *ngFor="let item of attendanceList.controls; let i = index"
+                                [formGroupName]="i">
+                                <tr>
+                                    <td class="text-center">{{i + 1}}.</td>
+                                    <td>
+                                        <div style="display: none;">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <input matInput formControlName="personId"/>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="item-detail ">
+                                            <!-- <mat-form-field appearance="outline" class="full-width">
+                                                <input matInput formControlName="personName"/>
+                                            </mat-form-field> -->
+                                            {{ item.get("personName").value }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="item-detail mt-2">
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>{{ 'ATT_STATUS' | translate }}</mat-label>
+                                                <mat-select formControlName="attendanceStatus" (selectionChange)="changeAttendenceStatus(i, $event)">
+                                                    <mat-option value="1">{{ 'FULL_DAY' | translate }}</mat-option>
+                                                    <mat-option value="0.5">{{ 'HALF_DAY' | translate }}</mat-option>
+                                                    <mat-option value="0">{{ 'ABSENT' | translate }}</mat-option>
+                                                </mat-select>
+                                                <mat-error
+                                                            *ngIf="submitted && attendance(i).get('attendanceStatus').hasError('required')">
+                                                            {{ 'ATTENDACNE_STATUS_REQUIRED' | translate }}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="item-detail mt-2" >
+                                            <mat-form-field appearance="outline" class="full-width">
+                                                <mat-label>{{ 'SITE_NAME' | translate }}</mat-label>
+                                                <mat-select formControlName="siteId">
+                                                    <mat-option *ngFor="let option of siteList"
+                                                        [value]="option.siteId">{{
+                                                        option.siteName }}</mat-option>
+                                                </mat-select>
+                                                <mat-error
+                                                *ngIf="submitted && attendance(i).get('siteId').hasError('required')">
+                                                {{ 'SITE_REQUIRED' | translate }}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="item-detail mt-2">
+                                            <mat-form-field appearance="outline" class="width-1">
+                                                <mat-label>{{ 'WITHDRAW_AMOUNT' | translate }}</mat-label>
+                                                <input matInput [placeholder]=" 'ENTER_WITHDRAW_AMOUNT' | translate " oninput="this.value = this.value.replace(/^\s+|\D+/g, '').substring(0, 10)" formControlName="withdrawAmount" />
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="item-detail mt-2" >
+                                            <mat-form-field appearance="outline" class="width-1">
+                                                <mat-label>{{ 'OVERTIME_AMOUNT' | translate }}</mat-label>
+                                                <input matInput [placeholder]=" 'ENTER_OVERTIME_AMOUNT' | translate " oninput="this.value = this.value.replace(/^\s+|\D+/g, '').substring(0, 10)" formControlName="overtimeAmount" />
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="item-detail mt-2">
+                                            <mat-form-field appearance="outline" class="width-1">
+                                                <mat-label>{{ 'REMARKS' | translate }}</mat-label>
+                                                <input matInput [placeholder]="'ENTER_REMARKS' | translate" formControlName="remarks" />
+                                            </mat-form-field>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="float-end">
+                    <button mat-flat-button color="primary" type="submit" >{{ (AttendanceId == null ? 'ADD' : 'UPDATE') |
+                        translate }}</button>&nbsp;
+                    <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate
+                        }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

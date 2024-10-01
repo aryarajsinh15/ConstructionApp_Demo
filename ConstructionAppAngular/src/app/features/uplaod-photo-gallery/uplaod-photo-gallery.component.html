@@ -1,0 +1,34 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{ 'UPLOAD_SITE_IMAGES' | translate }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="uplaodSiteImageForm" (ngSubmit)="submitSiteImageForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_CATEGORY' | translate }}</mat-label>
+                <mat-select formControlName="categoryName">
+                    <mat-option *ngFor="let item of activeSiteCategory" [value]="item.sitePhotoCategoryId">
+                        {{ item.categoryName }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:library_books"></mat-icon>
+                <mat-error *ngIf="submitted && uplaodSiteImageForm.get('categoryName').hasError('required')">
+                    {{ 'PLEASE_SELECT_CATEGORY' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <input #fileInput type="file" formControlName="siteImage" accept=".png, .jpg, .jpeg" multiple
+                (change)="onFileSelected($event)" />
+            <mat-error *ngIf="submitted && uplaodSiteImageForm.get('siteImage')?.hasError('required')">
+                {{ 'SITE_IMAGE_IS_REQUIRED' | translate }}
+            </mat-error>
+            <div class="float-end">
+                <button mat-flat-button color="primary" type="submit">{{ 'UPLOAD' | translate }}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate
+                    }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

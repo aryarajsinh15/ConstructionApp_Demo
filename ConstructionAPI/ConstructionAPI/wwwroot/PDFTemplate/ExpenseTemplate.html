@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Gujarati&display=swap');
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .gujarati {
+            font-family: 'Noto Sans Gujarati', sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ExpenseList}}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Expense Type</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Site Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{tableBody}}
+        </tbody>
+    </table>
+</body>
+</html>

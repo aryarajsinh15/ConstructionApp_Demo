@@ -1,0 +1,103 @@
+.count-box h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.count-box {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.count-box i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+.count-box .user {
+    margin: 10px 0 0;
+    font-size: 24px;
+    color: #007bff;
+}
+
+.count-box .icon-users {
+    font-size: 36px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.count-box .site {
+    margin: 10px 0 0;
+    font-size: 24px;
+    color: rgb(255, 92, 92);
+}
+
+.count-box .icon-sites {
+    font-size: 36px;
+    color: rgb(255, 92, 92);
+    margin-bottom: 10px;
+}
+
+.count-box .merchant {
+    margin: 10px 0 0;
+    font-size: 24px;
+    color: rgb(73, 174, 73);
+}
+
+.count-box .icon-merchants {
+    font-size: 36px;
+    color: rgb(73, 174, 73);
+    margin-bottom: 10px;
+}
+
+.person {
+    margin: 10px 0 0;
+    font-size: 24px;
+    color: rgb(204, 204, 65);
+}
+
+.count-box .icon-persons {
+    font-size: 36px;
+    color: rgb(204, 204, 65);
+    margin-bottom: 10px;
+}
+
+.count-box .owner {
+    margin: 10px 0 0;
+    font-size: 24px;
+    color: rgb(187, 86, 187);
+}
+
+.count-box .icon-owners {
+    font-size: 36px;
+    color: rgb(187, 86, 187);
+    margin-bottom: 10px;
+}
+
+.count-box .client {
+    margin: 10px 0 0;
+    font-size: 24px;
+    color: rgb(223, 137, 51);
+}
+
+.count-box .icon-clients {
+    font-size: 36px;
+    color: rgb(223, 137, 51);
+    margin-bottom: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+@media (min-width: 600px) {
+    .container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+}

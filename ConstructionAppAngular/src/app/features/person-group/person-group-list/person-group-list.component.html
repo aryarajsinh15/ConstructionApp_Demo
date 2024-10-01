@@ -1,0 +1,83 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-16 flex flex-col items-start justify-center">
+        <div [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+            class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">{{'PERSON_GROUP' | translate}}</h1>
+                <vex-breadcrumbs [crumbs]="['Person Group', 'List']"></vex-breadcrumbs>
+            </div>
+            <div class="sm:block">
+                <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">
+                    <mat-button-toggle value="boxed">Boxed</mat-button-toggle>
+                    <mat-button-toggle value="fullwidth">Full-Width</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+        [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+        <div class="card overflow-auto -mt-16">
+            <div class="bg-app-bar px-6 h-16 border-b sticky left-0 flex items-center">
+                <h2
+                    class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r  rtl:border-l sm:block flex-none">
+                    <span>{{ 'GROUP_LIST' | translate }}</span>
+                </h2>
+                <div
+                    class="bg-foreground rounded-full border px-4 max-w-[300px] flex-auto flex items-center border border-gray-300">
+                    <mat-icon class="icon-sm text-secondary" svgIcon="mat:search"></mat-icon>
+                    <input class="px-4 py-2 border-0 outline-none w-full bg-transparent" [(ngModel)]="searchKeyword"
+                        (keyup)="applyFilter($event)" placeholder="{{ 'SEARCH' | translate }}" type="text" matInput
+                        oninput="this.value = this.value.replace(/^\s+/g, '')">
+                </div>
+                <span class="flex-1"></span>
+                <button (click)="addEditGroup(null, null)" class="ml-4 flex-none" color="primary" mat-mini-fab
+                    [title]="'Add New Person Group' | translate" type="button">
+                    <mat-icon svgIcon="mat:add"></mat-icon>
+                </button>
+            </div>
+            <table mat-table [dataSource]="dataSource" class="w-full" (matSortChange)="sortData($event)"
+                matSort>
+                <ng-container matColumnDef="groupname">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="groupname" class="table-header"> {{ 'GROUP_NAME' | translate }}
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.groupName }} </td>
+                </ng-container>
+                <ng-container matColumnDef="personcount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="personcount" class="table-header"> {{ 'PERSON_COUNT' | translate }}
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.personCount }} </td>
+                </ng-container>
+                <ng-container matColumnDef="isactive">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="isactive" class="table-header">{{ 'STATUS' | translate }}</th>
+                    <td mat-cell *matCellDef="let element" class="WrapData cursor-pointer ">
+                        <span *ngIf="element.isActive" class="text-success cursor-pointer badge-active"
+                            (click)="activeInactiveGroup(element.personGroupId, element.groupName,'InActive')">{{ 'ACTIVE' | translate
+                            }}</span>
+                        <span *ngIf="!element.isActive" class="text-danger cursor-pointer badge-inactive"
+                            (click)="activeInactiveGroup(element.personGroupId , element.groupName,'Active')">{{ 'INACTIVE' | translate
+                            }}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="table-header"> {{ 'ACTIONS' | translate }} </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button class="action-button" (click)="addEditGroup(element.personGroupId, element.groupName)"><mat-icon svgIcon="mat:edit"
+                                title="Edit Person Group"></mat-icon></button>
+                        <button class="action-button" (click)="deleteGroup(element.groupName ,element.personGroupId )"> <mat-icon
+                                svgIcon="mat:delete" title="Delete Person Group"></mat-icon></button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div *ngIf="showData"
+                [ngClass]="dataSource.filteredData && dataSource.filteredData.length > 0 ? 'hidden' : 'visible'">
+                <h5 class="text-center py-4">{{ 'NO_PERSON_GROUP_RECORD_FOUND' | translate }}</h5>
+            </div>
+            <mat-paginator *ngIf="!showData" [length]="totalrecord" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" aria-label="Select page" (page)="pageChanged($event)"
+                [showFirstLastButtons]="true">
+            </mat-paginator>
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>

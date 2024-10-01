@@ -1,0 +1,78 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{ (challanId == null ? 'ADD_CHALLAN' : 'EDIT_CHALLAN') |
+            translate }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditChallanForm" (ngSubmit)="submitChallanForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_CHALLAN_DATE' | translate}}</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="challanDate" [max]="minDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="submitted && AddEditChallanForm.get('challanDate').hasError('required')">
+                    {{ 'CHALLAN_DATE_IS_REQUIRED' | translate}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_SITE' | translate }}</mat-label>
+                <mat-select formControlName="siteId">
+                    <mat-option *ngFor="let site of activeSite" [value]="site.siteId">
+                        {{ site.siteName }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:location_city"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditChallanForm.get('siteId').hasError('required')">
+                    {{ 'SITE_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_MERCHANT' | translate}}</mat-label>
+                <mat-select formControlName="merchantId">
+                    <mat-option *ngFor="let site of merchantList" [value]="site.merchantId">
+                        {{ site.merchantName }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:location_city"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditChallanForm.get('merchantId').hasError('required')">
+                    {{ 'MERCHANT_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'CHALLAN_NO' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_CHALLAN_NUMBER' | translate" type="text"
+                    formControlName="challanNo">
+                <mat-error *ngIf="submitted && AddEditChallanForm.get('challanNo').hasError('required')">
+                    {{ 'CHALLAN_NUMBER_IS_REQUIRED' | translate}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'CAR_NO' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_CAR_NUMBER' | translate" type="text" formControlName="carNo">
+                <mat-error *ngIf="submitted && AddEditChallanForm.get('carNo').hasError('required')">
+                    {{ 'CAR_NUMBER_IS_REQUIRED' | translate}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{'REMARKS'| translate}}</mat-label>
+                <textarea matInput placeholder="{{'REMARKS_REQUIRED'|translate}}" type="text"
+                    formControlName="remarks"></textarea>
+            </mat-form-field>
+            <input type="file" formControlName="challanFile" (change)="onFileSelected($event)" />
+            <div class="float-end">
+                <button type="button" *ngIf="this.editedChallanDetails.challanPhoto != null"><a class="show-file-button"
+                        [href]="this.editedChallanDetails.challanPhoto" target="_blank">{{ 'SHOW_FILE' |
+                        translate}}</a></button>&nbsp;&nbsp;
+                <button mat-flat-button color="primary" type="submit">{{challanId == null ? ('ADD' | translate) :
+                    ('UPDATE' | translate)}}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate
+                    }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

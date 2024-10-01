@@ -1,0 +1,38 @@
+.confirmation {
+    color: #fa8989;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 29px;
+}
+
+p.name {
+    color: #667085;
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 5px auto 0px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.WrapData {
+    white-space: nowrap;
+    max-width: 200px;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+h4.previewHeading {
+    color: var(--black, #000);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0px;
+}

@@ -1,0 +1,68 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{ (expenseId == null ? 'ADD_EXPENSE' : 'EDIT_EXPENSE') |
+            translate }}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditExpenseForm" (ngSubmit)="submitExpenseForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'CHOOSE_EXPENSE_DATE' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="expenseDate" [max]="minDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="submitted && AddEditExpenseForm.get('expenseDate').hasError('required')">
+                    {{ 'EXPENSE_DATE_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_EXPENSE_TYPE' | translate }}</mat-label>
+                <mat-select formControlName="expenseType" (selectionChange)="onExpenseTypeChange($event.value)">
+                    <mat-option *ngFor="let type of expenseType" [value]="type.expenseTypeId">
+                        {{ type.expenseType }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:import_contacts"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditExpenseForm.get('expenseType').hasError('required')">
+                    {{ 'EXPENSE_TYPE_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline" *ngIf="expenseTypeId == 1">
+                <mat-label>{{ 'SELECT_SITE' | translate }}</mat-label>
+                <mat-select formControlName="siteId">
+                    <mat-option *ngFor="let site of activeSite" [value]="site.siteId">
+                        {{ site.siteName }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix svgIcon="mat:location_city"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditExpenseForm.get('siteId').hasError('required')">
+                    {{ 'SITE_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'AMOUNT' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_AMOUNT' | translate" formControlName="amount" type="text"
+                    maxlength="10"
+                    oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);" />
+                    <mat-icon matPrefix svgIcon="mat:monetization_on"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditExpenseForm.get('amount').hasError('required')">
+                    {{ 'AMOUNT_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'DESCRIPTION' | translate }}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_DESCRIPTION' | translate" formControlName="description"></textarea>
+            </mat-form-field>
+            <input type="file" formControlName="expenseFile" (change)="onFileSelected($event)" />
+            <div class="float-end">
+                <button type="button" *ngIf="this.editedExpenseDetails.expenseFile != null"><a class="show-file-button"
+                    [href]="this.editedExpenseDetails.expenseFile" target="_blank">{{ 'SHOW_FILE' | translate }}</a></button>&nbsp;&nbsp;
+                <button mat-flat-button color="primary" type="submit">{{ expenseId == null ? ('ADD' | translate) : ('UPDATE' | translate) }}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate
+                    }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

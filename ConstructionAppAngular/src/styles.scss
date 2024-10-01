@@ -1,0 +1,56 @@
+@import "~simplebar/dist/simplebar.css";
+@import "~highlight.js/styles/androidstudio.css";
+// Vex Core
+@import "./@vex/styles/core";
+
+/*
+  You can override any CSS Variable or style here
+  Example:
+
+  :root {
+   --sidenav-background: #333333;
+  }
+
+  All possible variables can be found in @vex/styles/core or by simply inspecting the element you want to change
+  in Chrome/Firefox DevTools
+*/
+
+/**
+  Uncomment the below code and adjust the values to fit your colors, the application will automatically adjust
+ */
+:root {
+  // --color-primary: blue;
+  // --color-primary-contrast: white;
+
+  // --color-accent: yellow;
+  // --color-accent-contrast: black;
+
+  // --color-warn: yellow;
+  // --color-warn-contrast: black;
+}
+
+
+// Styling the top bar in each table
+.bg-app-bar{
+  min-height: 80px;
+}
+.bg-app-bar .mat-mdc-form-field{
+  min-width: 180px;
+}
+@media (max-width: 768px){
+  .bg-app-bar{
+      min-height: 150px;
+  }  
+}
+.mat-mdc-paginator{
+  position: sticky;
+  left: 0;
+}
+// input[type="file"]::file-selector-button{
+//   cursor: pointer;
+//   color: #fff;
+//   padding: 0.5em;
+//   border: 0;
+//   border-radius: 20px;
+//   background: #6366f1;
+// }

@@ -1,0 +1,41 @@
+<div  class="p-gutter container">
+    <div class="flex flex-col sm:flex-row gap-4">
+        <div @fadeInUp class="card flex-auto">
+            <div class="px-6 py-4 border-b flex items-center">
+                <button (click)="backToSite()" class="cursor-pointer fs-4" title="Back To Site"><mat-icon
+                        svgIcon="mat:keyboard_backspace"></mat-icon></button>
+                <h2 class="title m-0 ms-2">{{ 'SITE_IMAGES' | translate }} - ({{siteName}})</h2>
+                <div class="ms-3 relative flex items-center cursor-pointer select-none rounded-full px-4 py-1 hover:bg-primary/10 trans-ease-out"
+                    matRipple (click)="uploadSiteImage(siteId)">
+                    <div @scaleIn class="p-2 bg-primary/10 text-primary rounded-full ltr:mr-4 rtl:ml-4">
+                        <mat-icon class="block" svgIcon="mat:add_a_photo"></mat-icon>
+                    </div>
+                    <p @fadeInRight class="font-medium text-primary mt-3">{{ 'UPLOAD_SITE_IMAGES' | translate }}</p>
+                </div>
+            </div>
+            <div *ngFor="let item of siteCategoryImageList">
+                <mat-accordion>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{item.categoryName}}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="f-carousel" id="myCarousel">
+                            <div class="f-carousel__viewport">
+                                <div class="f-carousel__track">
+                                    <div *ngFor="let img of item.images" class="f-carousel__slide">
+                                        <a data-fancybox="gallery" href="{{ img.photoName }}">
+                                            <img class="rounded img img-fluid" [src]="img.photoName" (error)="handleImageError(img)"/>
+                                        </a>
+                                        <i class="fa-solid fa-circle-xmark cross-icon" title="Delete Image" (click)="deleteImageById(img.photoName,img.sitePhotoId)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+    </div>
+</div>

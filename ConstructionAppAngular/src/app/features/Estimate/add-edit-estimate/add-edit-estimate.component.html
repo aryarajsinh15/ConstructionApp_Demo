@@ -1,0 +1,60 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">
+            {{ estimateId == null ? ('ADD_ESTIMATE' | translate) :
+            ('EDIT_ESTIMATE' | translate) }}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditEstimateForm" (ngSubmit)="submitEstimateForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'SELECT_ESTIMATE_DATE' | translate }}</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="estimateDate" [max]="minDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="submitted && AddEditEstimateForm.get('estimateDate').hasError('required')">
+                    {{ 'ESTIMATE_DATE_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'PARTY_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_PARTY_NAME' | translate" type="text" formControlName="partyName">
+                <mat-error *ngIf="submitted && AddEditEstimateForm.get('partyName').hasError('required')">
+                    {{ 'PARTY_NAME_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'ENTER_AMOUNT' | translate }} </mat-label>
+                <input matInput [placeholder]="'ENTER_AMOUNT' | translate" formControlName="totalAmount" maxlength="10"
+                    type="text" maxlength="10"
+                    oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);" />
+                <mat-error *ngIf="submitted && AddEditEstimateForm.get('totalAmount').hasError('required')">
+                    {{ 'TOTAL_AMOUNT_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'REMARKS' | translate}}</mat-label>
+                <textarea matInput [placeholder]="'ENTER_REMARKS' | translate" type="text"
+                    formControlName="remarks"></textarea>
+            </mat-form-field>
+
+            <input type="file" formControlName="estimateFile" (change)="onFileSelected($event)" />
+
+            <div class="float-end">
+                <button type="button" *ngIf="this.editedEstimateDetails.estimateFile != null"><a
+                        class="show-file-button" [href]="this.editedEstimateDetails.estimateFile" target="_blank">{{
+                        'SHOW_FILE' | translate }}</a></button>&nbsp;&nbsp;
+                <button mat-flat-button color="primary" type="submit">
+                    {{ estimateId == null ? ('ADD' | translate) : ('UPDATE' | translate) }}
+                </button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

@@ -1,0 +1,284 @@
+<div class="p-gutter container-fluid">
+    <div class="flex flex-col sm:flex-row gap-4">
+        <div class="card flex-auto">
+            <div class="px-6 py-4 border-b flex items-center">
+                <button (click)="redirectToSiteBillPayment(siteId,siteName)" class="cursor-pointer fs-4" title="Back To Bill Payment">
+                    <mat-icon svgIcon="mat:keyboard_backspace"></mat-icon>
+                </button>
+                <h2 class="title m-0 ms-3">{{ 'BILL_PAYMENT' | translate }}</h2>
+            </div>
+            <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
+                <div class="px-6 py-4 flex flex-col">
+                    <div class="flex flex-col sm:flex-row sm:gap-4">
+                        <mat-form-field class="flex-auto" appearance="outline">
+                            <mat-label>{{ 'BILL_DATE' | translate }}</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="billDate">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="submitted && billForm.get('billDate')?.hasError('required')">
+                                {{ 'BILL_DATE_IS_REQUIRED' | translate }}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="flex-auto" appearance="outline">
+                            <mat-label>{{ 'BILL_NUMBER' | translate }}</mat-label>
+                            <input matInput formControlName="billNumber"
+                                placeholder="{{'ENTER_BILL_NUMBER'|translate}}" />
+                            <mat-error *ngIf="submitted && billForm.get('billNumber')?.hasError('required')">
+                                {{ 'BILL_NUMBER_IS_REQUIRED' | translate }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>{{ 'REMARKS' | translate }}</mat-label>
+                        <textarea matInput formControlName="remarks"
+                            placeholder="{{'ENTER_REMARKS'|translate}}"></textarea>
+                        <mat-error *ngIf="submitted && billForm.get('remarks')?.hasError('required')">
+                            {{ 'REMARKS_IS_REQUIRED' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{ 'ITEM_NAME' | translate }}</th>
+                                    <th>{{ 'TYPE' | translate }}</th>
+                                    <th>{{ 'QUANTITY' | translate }}</th>
+                                    <th>{{ 'LENGTH' | translate }}</th>
+                                    <th>{{ 'HEIGHT' | translate }}</th>
+                                    <th>{{ 'WIDTH' | translate }}</th>
+                                    <th>{{ 'AREA' | translate }}</th>
+                                    <th>{{ 'RATE' | translate }}</th>
+                                    <th>{{ 'TOTAL' | translate }}</th>
+                                    <th>{{ 'ACTIONS' | translate }}</th>
+                                </tr>
+                            </thead>
+                            <tbody formArrayName="items">
+                                <ng-container *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+                                    <tr>
+                                        <td [attr.rowspan]="getItemDetails(i).length + 2">
+                                            <ng-container>
+                                                <div class="item-detail mt-4">
+                                                    {{i + 1}}.
+                                                </div>
+                                                <button *ngIf="!isSingleRow()" type="button" class="action-button ms-2"
+                                                    (click)="deleteRow(i)" title="Delete row">
+                                                    <mat-icon svgIcon="mat:delete"></mat-icon>
+                                                </button>
+                                            </ng-container>
+                                        </td>
+                                        <td [attr.colspan]="10">
+                                            <mat-form-field appearance="outline" class="full-width mt-3">
+                                                <mat-label>{{ 'DESCRIPTION' | translate }}</mat-label>
+                                                <input matInput placeholder="{{'DESCRIPTION'|translate}}"
+                                                    formControlName="description" />
+                                                <mat-error
+                                                    *ngIf="submitted && getItemAtIndex(i).get('description')?.hasError('required')">
+                                                    {{ 'DESCRIPTION_REQUIRED' | translate }}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </td>
+                                    </tr>
+                                    <ng-container formArrayName="itemDetail">
+                                        <tr *ngFor="let itemDetails of getItemDetails(i).controls; let j = index"
+                                            [formGroupName]="j">
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <mat-form-field appearance="outline" class="width-1">
+                                                            <mat-label>{{ 'ITEM_NAME' | translate }}</mat-label>
+                                                            <input matInput placeholder="{{'ITEM_NAME'|translate}}"
+                                                                formControlName="name" />
+                                                            <mat-error
+                                                                *ngIf="submitted && getItemDetails(i).at(j).get('name')?.hasError('required')">
+                                                                {{ 'NAME_IS_REQUIRED' | translate }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <mat-form-field appearance="outline" class="width-1">
+                                                            <mat-label>{{ 'TYPE' | translate }}</mat-label>
+                                                            <mat-select placeholder="{{'SELECT_TYPE'|translate}}"
+                                                                formControlName="type">
+                                                                <mat-option *ngFor="let bill of billType"
+                                                                    [value]="bill.billTypeId">{{bill.billTypeName}}</mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                                *ngIf="submitted && getItemDetails(i).at(j).get('type')?.hasError('required')">
+                                                                {{ 'PLEASE_SELECT_TYPE' | translate }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <mat-form-field appearance="outline" class="width-2">
+                                                            <mat-label>{{ 'QUANTITY' | translate }}</mat-label>
+                                                            <input matInput
+                                                                oninput="this.value = this.value.replace(/^\s+|\D+/g, '').substring(0, 10)"
+                                                                placeholder="{{'QUANTITY'|translate}}"
+                                                                formControlName="quantity" />
+                                                            <mat-error
+                                                                *ngIf="submitted && getItemDetails(i).at(j).get('quantity')?.hasError('required')">
+                                                                {{ 'QTY_IS_REQUIRED' | translate }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <mat-form-field appearance="outline" class="width-1">
+                                                            <mat-label>{{ 'LENGTH' | translate }}</mat-label>
+                                                            <input matInput
+                                                                oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);"
+                                                                placeholder="{{'LENGTH'|translate}}"
+                                                                formControlName="length" />
+                                                            <mat-error
+                                                                *ngIf="submitted && getItemDetails(i).at(j).get('length')?.hasError('required')">
+                                                                {{ 'LENGTH_IS_REQUIRED' | translate }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <mat-form-field appearance="outline" class="width-2">
+                                                            <mat-label>{{ 'HEIGHT' | translate }}</mat-label>
+                                                            <input matInput
+                                                                oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);"
+                                                                placeholder="{{'HEIGHT'|translate}}"
+                                                                formControlName="height" />
+                                                            <mat-error
+                                                                *ngIf="submitted && getItemDetails(i).at(j).get('height')?.hasError('required')">
+                                                                {{ 'HEIGHT_IS_REQUIRED' | translate }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <mat-form-field appearance="outline" class="width-2">
+                                                            <mat-label>{{ 'WIDTH' | translate }}</mat-label>
+                                                            <input matInput
+                                                                oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);"
+                                                                placeholder="{{'WIDTH'|translate}}"
+                                                                formControlName="width" />
+                                                            <mat-error
+                                                                *ngIf="submitted && getItemDetails(i).at(j).get('width')?.hasError('required')">
+                                                                {{ 'WIDTH_IS_REQUIRED' | translate }}
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-4">
+                                                        <span> {{getItemArea(i,j) | CustomCurrency}}</span>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <span></span>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-2">
+                                                        <span></span>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                            <td>
+                                                <ng-container>
+                                                    <div class="item-detail mt-4">
+                                                        <button *ngIf="getItemDetails(i).length > 1" type="button"
+                                                            class="action-button" (click)="removeItemDetail(i,j)"
+                                                            title="Delete Item">
+                                                            <mat-icon svgIcon="mat:delete"></mat-icon>
+                                                        </button>
+                                                        <button type="button" *ngIf="getItemDetails(i).length-1  == j"
+                                                            class="action-button" (click)="addItemDescription(i)"
+                                                            title="Add New Item">
+                                                            <mat-icon svgIcon="mat:add"></mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <tr>
+                                        <td [attr.colspan]="6">
+                                            <ng-container>
+                                                <div class="item-detail mt-4">
+                                                    <strong>{{ 'TOTAL' | translate }}</strong>
+                                                </div>
+                                            </ng-container>
+                                        </td>
+                                        <td>
+                                            <div class="item-detail mt-4">
+                                                <strong> {{getItemAreaTotal(i) | CustomCurrency}}</strong>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="item-detail mt-2">
+                                                <mat-form-field appearance="outline" class="width-1">
+                                                    <mat-label>{{ 'RATE' | translate }}</mat-label>
+                                                    <input matInput placeholder="{{'RATE'|translate}}"
+                                                        formControlName="rate"
+                                                        oninput="this.value = this.value.replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').substring(0, 10);" />
+                                                    <mat-error
+                                                        *ngIf="submitted && getItemAtIndex(i).get('rate')?.hasError('required')">
+                                                        {{ 'RATE_IS_REQUIRED' | translate }}
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="item-detail mt-4">
+                                                <strong> {{getTotal(i) | CustomCurrency}}</strong>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td [colSpan]="8">
+                                        <strong> {{ 'FINAL_TOTAL' | translate }}</strong>
+                                    </td>
+                                    <td [colSpan]="8">
+                                        <strong> {{getFinalTotal() | CustomCurrency}}</strong>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="flex items-center justify-end gap-2 mt-3">
+                        <button color="primary" mat-flat-button color="primary" type="submit">{{ billId == null ?
+                            ('SAVE' | translate):
+                            ('UPDATE' | translate) }}</button>
+                        <button color="primary" mat-button color="primary" type="button" (click)="addItem()"
+                            title="Add New Row">{{ 'ADD' | translate }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

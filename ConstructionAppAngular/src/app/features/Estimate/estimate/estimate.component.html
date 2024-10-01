@@ -1,0 +1,147 @@
+<vex-page-layout>
+    <vex-page-layout-header class="pb-32 flex flex-col items-start justify-center">
+        <div [class.container]="layoutCtrl.value === 'boxed'" [class.px-gutter]="layoutCtrl.value === 'fullwidth'"
+            class="w-full flex flex-col sm:flex-row justify-between">
+            <div>
+                <h1 class="title mt-0 mb-1">{{ 'ESTIMATE' | translate}}</h1>
+                <vex-breadcrumbs [crumbs]="['Estimate', 'List']"></vex-breadcrumbs>
+            </div>
+            <div class="sm:block">
+                <mat-button-toggle-group [formControl]="layoutCtrl" class="mt-4 sm:mt-0">
+                    <mat-button-toggle value="boxed">Boxed</mat-button-toggle>
+                    <mat-button-toggle value="fullwidth">Full-Width</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+    </vex-page-layout-header>
+    <vex-page-layout-content [class.container]="layoutCtrl.value === 'boxed'"
+        [class.px-gutter]="layoutCtrl.value === 'fullwidth'" class="-mt-6">
+        <div class="card overflow-auto -mt-32">
+            <div class="bg-app-bar px-6  sticky left-0 flex items-center flex-wrap justify-content-between">
+                <h2
+                    class="title my-0 ltr:pr-4 rtl:pl-4 ltr:mr-4 rtl:ml-4 ltr:border-r  rtl:border-l sm:block flex-none">
+                    <span>{{ 'ESIMATE_LIST' | translate}}</span>
+                </h2>
+                <div class="d-flex flex-nowrap">
+                    <div
+                        class="bg-foreground rounded-full border px-4 max-w-[300px] flex-auto flex items-center border border-gray-300">
+                        <mat-icon class="icon-sm text-secondary" svgIcon="mat:search"></mat-icon>
+                        <input class="px-4 py-2 border-0 outline-none w-full bg-transparent" [(ngModel)]="searchKeyword"
+                            (keyup)="applyFilter($event)" placeholder="{{ 'SEARCH' | translate }}" type="text" matInput
+                            oninput="this.value = this.value.replace(/^\s+/g, '')">
+                    </div>
+                    <span class="flex-1"></span>
+                    <!-- <button (click)="addEditEstimate(null,false)" class="ml-4 flex-none" color="primary" mat-mini-fab
+                        [title]="'Add New Estimate' | translate" type="button">
+                        <mat-icon svgIcon="mat:add"></mat-icon>
+                    </button>
+                    <button class="ml-4 flex-none" color="accent" mat-mini-fab (click)="EstimateBillPayment()"
+                            [title]="'Add New Estimate Bill Payment' | translate" type="button">
+                            <mat-icon svgIcon="mat:add"></mat-icon>
+                        </button> -->
+                <button (click)="$event.stopPropagation()" title="Add New Bill Payment" class="ml-4 flex-none"
+                    color="primary" mat-mini-fab [matMenuTriggerFor]="addActionsMenu" type="button">
+                    <mat-icon svgIcon="mat:add"></mat-icon>
+                </button>
+                </div>
+            </div>
+            <div class="bg-app-bar  sticky left-0 right-0 w-100 row">
+                <mat-form-field appearance="outline" class=" col-md-2 col-sm-12">
+                    <mat-label>{{ 'SELECT_START_DATE' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="pickers" [(ngModel)]="startDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickers"></mat-datepicker-toggle>
+                    <mat-datepicker #pickers></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class=" col-md-2 col-sm-12">
+                    <mat-label>{{ 'SELECT_END_DATE' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="pickere" [(ngModel)]="endDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickere"></mat-datepicker-toggle>
+                    <mat-datepicker #pickere></mat-datepicker>
+                </mat-form-field>
+                <div class="col-md-4 col-sm-10 d-flex align-items-center justify-content-start mb-4">
+                    <button mat-flat-button color="primary" type="button" class="filter-btn"
+                        (click)="fetchEstimateList()">{{ 'APPLY' | translate }}</button>
+                    <button mat-flat-button color="warn" type="button" class="filter-btn ms-2"
+                        (click)="clearFilter()">{{ 'RESET' | translate }}</button>
+                </div>
+            </div>
+            <table mat-table [dataSource]="dataSource" class="w-full" (matSortChange)="sortData($event)" matSort>
+                <ng-container matColumnDef="estimateDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="estimateDate" class="table-header"> {{
+                        'ESTIMATE_DATE' | translate
+                        }}
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.estimateDate | date: 'dd/MM/yyyy' }} </td>
+                </ng-container>
+                <ng-container matColumnDef="partyName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="partyName" class="table-header"> {{
+                        'PARTY_NAME' |
+                        translate }}
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.partyName }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalAmount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="totalAmount" class="table-header">
+                        {{'TOTAL_AMOUNT'|translate}}
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{ element.totalAmount | CustomCurrency }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="isActive">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="isActive" class="table-header"> {{ 'STATUS' |
+                        translate }}</th>
+                    <td mat-cell *matCellDef="let element" class="WrapData">
+                        <span *ngIf="element.isActive" class="text-success cursor-pointer badge-active"
+                            (click)="ActiveInActiveEstimate(element.estimateId , element.partyName,'InActive')">
+                            {{ 'ACTIVE' | translate }}
+                        </span>
+                        <span *ngIf="!element.isActive" class="text-danger cursor-pointer badge-inactive"
+                            (click)="ActiveInActiveEstimate(element.estimateId , element.partyName,'Active')">
+                            {{ 'INACTIVE' | translate }}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef class="table-header"> {{ 'ACTIONS'| translate }} </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button class="action-button"
+                            (click)="addEditEstimate(element.estimateId, element.hasItems)"><mat-icon
+                                svgIcon="mat:edit"></mat-icon></button>
+                        <button class="action-button" (click)="deleteEstimate(element.partyName, element.estimateId)">
+                            <mat-icon svgIcon="mat:delete" title="Delete Estimate"></mat-icon>
+                        </button>
+                        <button class="action-button" *ngIf="element.estimateFile != null"
+                            (click)="saveFile(element.estimateFile)">
+                            <mat-icon svgIcon="mat:download" title="Download Estimate File"></mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div *ngIf="showData"
+                [ngClass]="dataSource.filteredData && dataSource.filteredData.length > 0 ? 'hidden' : 'visible'">
+                <h5 class="text-center py-4">{{ 'NO_ESTIMATE_RECORD_FOUND'| translate }}</h5>
+            </div>
+            <mat-paginator *ngIf="!showData" [length]="totalrecord" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" aria-label="Select page" (page)="pageChanged($event)"
+                [showFirstLastButtons]="true">
+            </mat-paginator>
+        </div>
+    </vex-page-layout-content>
+</vex-page-layout>
+
+<mat-menu #addActionsMenu="matMenu" xPosition="before" yPosition="below">
+    <ng-template let-site="site" matMenuContent>
+        <button mat-menu-item (click)="addEditEstimate(null,false)">
+            <mat-icon svgIcon="mat:add" color="primary"></mat-icon>
+            <span>File</span>
+        </button>
+        <button mat-menu-item (click)="EstimateBillPayment()">
+            <mat-icon svgIcon="mat:add" color="primary"></mat-icon>
+            <span>Area</span>
+        </button>
+    </ng-template>
+</mat-menu>

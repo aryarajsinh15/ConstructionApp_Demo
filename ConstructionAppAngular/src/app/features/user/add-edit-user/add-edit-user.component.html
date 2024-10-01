@@ -1,0 +1,69 @@
+<div class="dialogue-content p-3">
+    <div class="d-flex justify-content-between mat-dialogue-header border-bottom-0 align-items-start">
+        <h4 class="mat-dialog-title" id="modal-basic-title">{{this.userId == null ? ('ADD_USER' | translate) : ('EDIT_USER' | translate)}}
+        </h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+    </div>
+</div>
+<mat-dialog-content class="">
+    <div>
+        <form class="example-form" [formGroup]="AddEditUserForm" (ngSubmit)="submitUserForm()">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'FULL_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_FULL_NAME' | translate" formControlName="name" type="text" />
+                <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditUserForm.get('name')?.hasError('required')">
+                    {{ 'FULL_NAME_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'USER_NAME' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_USER_NAME' | translate" formControlName="userName" type="text" (input)="removeSpaces($event)" />
+                <mat-icon matPrefix svgIcon="mat:person"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditUserForm.get('userName')?.hasError('required')">
+                    {{ 'USER_NAME_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'EMAIL' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_EMAIL' | translate" formControlName="email" type="text" (input)="removeSpacesFromEmail($event)"/>
+                <mat-icon matPrefix svgIcon="mat:email"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditUserForm.get('email')?.hasError('required')">
+                    {{ 'EMAIL_IS_REQUIRED' | translate }}
+                </mat-error>
+                <mat-error *ngIf="submitted && AddEditUserForm.get('email').errors?.['pattern']">
+                    {{ 'EMAIL_IS_NOT_VALID' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'PASSWORD' | translate }}</mat-label>
+                <input [type]="inputType" [placeholder]="'ENTER_PASSWORD' | translate" formControlName="password" matInput>
+                <mat-icon matPrefix svgIcon="mat:lock"></mat-icon>
+                <button (click)="toggleVisibility()" mat-icon-button matSuffix matTooltip="Toggle Visibility"
+                    type="button">
+                    <mat-icon *ngIf="visible" svgIcon="mat:visibility"></mat-icon>
+                    <mat-icon *ngIf="!visible" svgIcon="mat:visibility_off"></mat-icon>
+                </button>
+                <mat-error *ngIf="submitted && AddEditUserForm.get('password')?.hasError('required')">
+                    {{ 'PASSWORD_IS_REQUIRED' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width w-100" appearance="outline">
+                <mat-label>{{ 'MOBILE_NUMBER' | translate }}</mat-label>
+                <input matInput [placeholder]="'ENTER_MOBILE_NUMBER' | translate" formControlName="mobileNumber"
+                    oninput="this.value = this.value.replace(/^\s+|\D+/g, '').substring(0, 10)" />
+                <mat-icon matPrefix svgIcon="mat:phone"></mat-icon>
+                <mat-error *ngIf="submitted && AddEditUserForm.get('mobileNumber')?.hasError('required')">
+                    {{ 'MOBILE_NUMBER_IS_REQUIRED' | translate }}
+                </mat-error>
+                <mat-error *ngIf="submitted && AddEditUserForm.get('mobileNumber').errors?.['minlength']">
+                    {{ 'MOBILE_NUMBER_IS_INVALID' | translate }}
+                </mat-error>
+            </mat-form-field>
+            <div class="float-end">
+                <button mat-flat-button color="primary" type="submit">{{this.userId == null ? ('ADD' | translate) : ('UPDATE' | translate)}}</button>&nbsp;
+                <button mat-button color="primary" type="button" (click)="cancel()">{{ 'CANCEL' | translate }}</button>
+            </div>
+        </form>
+    </div>
+</mat-dialog-content>

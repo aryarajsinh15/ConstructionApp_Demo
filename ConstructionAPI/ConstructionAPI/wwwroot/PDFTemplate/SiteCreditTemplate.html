@@ -1,0 +1,158 @@
+﻿<!--<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        table {
+            page-break-inside: avoid;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .item-detail {
+            margin-top: 10px;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .headerImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .header {
+            height: 150px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="headerImage">
+        <strong>Site Payment - {{siteName}}</strong>
+    </div>
+
+    <div class="content">
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Payment Type</th>
+                        <th>Cheque No.</th>
+                        <th>Bank Name</th>
+                        <th>Cheque For</th>
+                        <th>User Name</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{tableBody}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+Gujarati&display=swap');
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        .gujarati {
+            font-family: 'Noto Sans Gujarati', sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .headerImage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .header {
+            height: 150px;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="headerImage">
+        <strong>Site Payment - {{siteName}}</strong>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Payment Type</th>
+                <th>Cheque No.</th>
+                <th>Bank Name</th>
+                <th>Cheque For</th>
+                <th>User Name</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{tableBody}}
+        </tbody>
+    </table>
+</body>
+</html>

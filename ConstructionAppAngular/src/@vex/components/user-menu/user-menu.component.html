@@ -1,0 +1,39 @@
+<div class="vex-user-menu">
+  <!-- <a (click)="close()" [routerLink]="['/apps/social']" class="vex-user-menu-item" matRipple
+    matRippleColor="rgb(var(--color-primary), 0.1)">
+    <mat-icon class="vex-user-menu-item__icon icon-sm" svgIcon="mat:account_circle"></mat-icon>
+    <div class="vex-user-menu-item__label">Your Profile</div>
+  </a>
+
+  <a (click)="close()" [routerLink]="['/']" class="vex-user-menu-item" matRipple
+    matRippleColor="rgb(var(--color-primary), 0.1)">
+    <mat-icon class="vex-user-menu-item__icon icon-sm" svgIcon="mat:insights"></mat-icon>
+    <div class="vex-user-menu-item__label">Analytics</div>
+    <div class="vex-user-menu-item__badge">NEW</div>
+  </a>
+
+  <a (click)="close()" [routerLink]="['/apps/social/timeline']" class="vex-user-menu-item" matRipple
+    matRippleColor="rgb(var(--color-primary), 0.1)">
+    <mat-icon class="vex-user-menu-item__icon icon-sm" svgIcon="mat:settings"></mat-icon>
+    <div class="vex-user-menu-item__label">Account Settings</div>
+  </a>
+
+  <div class="border-b border-divider mx-4"></div> -->
+
+  <div class="vex-user-menu-item" matRipple matRippleColor="rgb(var(--color-primary), 0.1)" (click)="close()">
+    <mat-icon class="vex-user-menu-item__icon icon-sm" svgIcon="mat:person"></mat-icon>
+    <div class="vex-user-menu-item__label" (click)="goToProfile()">{{ 'MY_PROFILE'| translate }}</div>
+  </div>
+
+  <div class="vex-user-menu-item" matRipple matRippleColor="rgb(var(--color-primary), 0.1)" (click)="close()">
+    <mat-icon class="vex-user-menu-item__icon icon-sm" svgIcon="mat:lock"></mat-icon>
+    <div class="vex-user-menu-item__label" (click)="goToChangePassword()">{{ 'CHANGE_PASSWORD'| translate }}</div>
+  </div>
+
+  <div (click)="backToSignIn('Logout')" class="cursor-pointer" (click)="close()">
+    <button  class="vex-user-menu-item" matRipple matRippleColor="rgb(var(--color-primary), 0.1)">
+      <mat-icon class="vex-user-menu-item__icon icon-sm" svgIcon="mat:logout"></mat-icon>
+      <div class="vex-user-menu-item__label">{{ 'LOGOUT'| translate }}</div>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+.badge-active {
+    background: #c5f7e8;
+    border: 1px solid #75d9bb;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    color: #333333;
+    padding: 4px 15px;
+    border-radius: 30px;
+    display: block;
+    width: fit-content;
+}
+
+.badge-inactive {
+    background: #fad3d3;
+    border: 1px solid #ffa7a7;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    color: #333333;
+    padding: 4px 15px;
+    border-radius: 30px;
+    display: block;
+    width: fit-content;
+}
+
+
+.action-button{
+    background: #E3EDF9;
+    border-radius: 100px;
+    padding: 4px;
+    width: 35px;
+    height: 33px;
+    margin-right: 10px;
+    text-decoration: none !important;
+}
+
+.filter-btn{
+    padding: 28px;
+    font-size: 16px;
+    border-radius: 5px !important;
+}
+
+.table-header {
+    font-size: 16px;
+    font-weight: bold;
+}
+.bg-app-bar{
+    min-height: 80px;
+}
+.bg-app-bar .mat-mdc-form-field{
+    min-width: 180px;
+}
+@media (max-width: 768px){
+    .bg-app-bar{
+        min-height: 150px;
+    }  
+}
